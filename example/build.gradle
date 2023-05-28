@@ -22,7 +22,8 @@ android {
             minifyEnabled false
         }
     }
-    lintOptions {
+    namespace 'com.xwray.groupie.example'
+    lint {
         abortOnError false
     }
 }

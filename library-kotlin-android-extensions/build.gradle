@@ -17,8 +17,6 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minimumSdkVersion
         targetSdkVersion rootProject.sdkVersion
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -34,6 +32,7 @@ android {
             minifyEnabled false
         }
     }
+    namespace 'com.xwray.groupie.kotlinandroidextensions'
 
 }
 

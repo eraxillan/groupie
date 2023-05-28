@@ -21,17 +21,18 @@ android {
         dataBinding true
         viewBinding false
     }
-
-    lintOptions {
+    namespace 'com.xwray.groupie.example.databinding'
+    lint {
         abortOnError false
     }
+
 }
 
 dependencies {
     implementation project(':library-databinding')
     implementation project(':example-shared')
-    implementation "androidx.appcompat:appcompat:1.4.1"
-    implementation "com.google.android.material:material:1.4.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "com.google.android.material:material:1.9.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.vectordrawable:vectordrawable:1.1.0"
     implementation "androidx.vectordrawable:vectordrawable-animated:1.1.0"
