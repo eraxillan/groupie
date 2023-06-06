@@ -20,6 +20,12 @@ android {
             minifyEnabled false
         }
     }
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
     namespace 'com.xwray.groupie.databinding'
     lint {
         abortOnError false
@@ -58,13 +64,13 @@ task javadoc(type: Javadoc) {
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     duplicatesStrategy = "exclude"
     from android.sourceSets.main.java.srcDirs
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc.destinationDir
 }
 

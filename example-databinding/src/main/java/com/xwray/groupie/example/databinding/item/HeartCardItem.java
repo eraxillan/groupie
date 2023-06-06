@@ -1,15 +1,11 @@
 package com.xwray.groupie.example.databinding.item;
 
 import android.graphics.drawable.Animatable;
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import android.view.View;
-
 import com.xwray.groupie.databinding.BindableItem;
+import com.xwray.groupie.example.core.R;
 import com.xwray.groupie.example.databinding.MainActivity;
-import com.xwray.groupie.example.databinding.R;
 import com.xwray.groupie.example.databinding.databinding.ItemHeartCardBinding;
-
 import java.util.List;
 
 public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
@@ -28,7 +24,7 @@ public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
 
     @Override
     public int getLayout() {
-        return R.layout.item_heart_card;
+        return com.xwray.groupie.example.databinding.R.layout.item_heart_card;
     }
 
     @Override
@@ -37,14 +33,11 @@ public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
         bindHeart(binding);
         binding.text.setText(String.valueOf(getId() + 1));
 
-        binding.favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inProgress = true;
-                animateProgress(binding);
+        binding.favorite.setOnClickListener(v -> {
+            inProgress = true;
+            animateProgress(binding);
 
-                onFavoriteListener.onFavorite(HeartCardItem.this, !checked);
-            }
+            onFavoriteListener.onFavorite(HeartCardItem.this, !checked);
         });
     }
 
@@ -57,7 +50,7 @@ public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
         binding.favorite.setChecked(checked);
     }
 
-    private void animateProgress(ItemHeartCardBinding binding) {
+    private void animateProgress(@NonNull ItemHeartCardBinding binding) {
         binding.favorite.setImageResource(R.drawable.avd_favorite_progress);
         ((Animatable) binding.favorite.getDrawable()).start();
     }
@@ -68,7 +61,11 @@ public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
     }
 
     @Override
-    public void bind(@NonNull ItemHeartCardBinding binding, int position, @NonNull List<Object> payloads) {
+    public void bind(
+            @NonNull ItemHeartCardBinding binding,
+            int position,
+            @NonNull List<Object> payloads
+    ) {
         if (payloads.contains(FAVORITE)) {
             bindHeart(binding);
         } else {

@@ -19,6 +19,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.TouchCallback
 import com.xwray.groupie.example.core.InfiniteScrollListener
 import com.xwray.groupie.example.core.Prefs
+import com.xwray.groupie.example.core.R
 import com.xwray.groupie.example.core.SettingsActivity
 import com.xwray.groupie.example.core.decoration.CarouselItemDecoration
 import com.xwray.groupie.example.core.decoration.DebugItemDecoration

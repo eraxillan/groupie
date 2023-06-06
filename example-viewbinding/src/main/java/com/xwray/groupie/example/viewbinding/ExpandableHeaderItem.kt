@@ -5,6 +5,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
+import com.xwray.groupie.example.core.R
 import com.xwray.groupie.example.viewbinding.databinding.ItemHeaderBinding
 import com.xwray.groupie.example.viewbinding.item.HeaderItem
 

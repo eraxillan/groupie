@@ -3,11 +3,12 @@ package com.xwray.groupie.example.viewbinding.item
 import android.graphics.drawable.Animatable
 import android.view.View
 import androidx.annotation.ColorInt
+import com.xwray.groupie.example.core.R
 import com.xwray.groupie.example.viewbinding.INSET
 import com.xwray.groupie.example.viewbinding.INSET_TYPE_KEY
-import com.xwray.groupie.example.viewbinding.R
 import com.xwray.groupie.example.viewbinding.databinding.ItemHeartCardBinding
 import com.xwray.groupie.viewbinding.BindableItem
+import com.xwray.groupie.example.viewbinding.R as MainR
 
 class HeartCardItem(
     @ColorInt private val colorInt: Int,
@@ -26,7 +27,7 @@ class HeartCardItem(
         extras[INSET_TYPE_KEY] = INSET
     }
 
-    override fun getLayout(): Int = R.layout.item_heart_card
+    override fun getLayout(): Int = MainR.layout.item_heart_card
 
     override fun initializeViewBinding(view: View): ItemHeartCardBinding =
         ItemHeartCardBinding.bind(view)
