@@ -1,25 +1,23 @@
 package com.xwray.groupie;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
 @RunWith(MockitoJUnitRunner.class)
 public class UpdatingGroupTest {
-
     @Mock
-    GroupAdapter groupAdapter;
+    GroupAdapter<?> groupAdapter;
 
     @Test
     public void updateGroupChangesRange() {
-        List<Item> children = new ArrayList<>();
+        List<Item<?>> children = new ArrayList<>();
         children.add(new AlwaysUpdatingItem(1));
         children.add(new AlwaysUpdatingItem(2));
 
@@ -37,8 +35,8 @@ public class UpdatingGroupTest {
 
     @Test
     public void changeAnItemNotifiesChange() {
-        List<Item> children = new ArrayList<>();
-        Item item = new DummyItem();
+        List<Item<?>> children = new ArrayList<>();
+        Item<?> item = new DummyItem();
         children.add(item);
 
         UpdatingGroup group = new UpdatingGroup();
@@ -49,5 +47,4 @@ public class UpdatingGroupTest {
 
         verify(groupAdapter).onItemChanged(group, 0);
     }
-
 }

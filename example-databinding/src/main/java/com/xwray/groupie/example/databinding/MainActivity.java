@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
     private OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
-        public void onItemClick(Item item, View view) {
+        public void onItemClick(@NonNull Item item, @NonNull View view) {
             if (item instanceof CardItem) {
                 CardItem cardItem = (CardItem) item;
                 if (!TextUtils.isEmpty(cardItem.getText())) {
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
 
     private OnItemLongClickListener onItemLongClickListener = new OnItemLongClickListener() {
         @Override
-        public boolean onItemLongClick(Item item, View view) {
+        public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
             if (item instanceof CardItem) {
                 CardItem cardItem = (CardItem) item;
                 if (!TextUtils.isEmpty(cardItem.getText())) {

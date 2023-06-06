@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A group which has a list of contents and an optional header and footer.
@@ -31,11 +31,11 @@ public class Section extends NestedGroup {
     private boolean isPlaceholderVisible = false;
 
     public Section() {
-        this(null, new ArrayList<Group>());
+        this(null, new ArrayList<>());
     }
 
     public Section(@Nullable Group header) {
-        this(header, new ArrayList<Group>());
+        this(header, new ArrayList<>());
     }
 
     public Section(@NonNull Collection<? extends Group> children) {
@@ -54,7 +54,8 @@ public class Section extends NestedGroup {
     public void add(int position, @NonNull Group group) {
         super.add(position, group);
         children.add(position, group);
-        final int notifyPosition = getHeaderItemCount() + GroupUtils.getItemCount(children.subList(0, position));
+        final int notifyPosition = getHeaderItemCount() +
+                GroupUtils.getItemCount(children.subList(0, position));
         notifyItemRangeInserted(notifyPosition, group.getItemCount());
         refreshEmptyState();
     }
@@ -78,7 +79,8 @@ public class Section extends NestedGroup {
         super.addAll(position, groups);
         this.children.addAll(position, groups);
 
-        final int notifyPosition = getHeaderItemCount() + GroupUtils.getItemCount(children.subList(0, position));
+        final int notifyPosition = getHeaderItemCount() +
+                GroupUtils.getItemCount(children.subList(0, position));
         notifyItemRangeInserted(notifyPosition, GroupUtils.getItemCount(groups));
         refreshEmptyState();
     }
@@ -134,6 +136,7 @@ public class Section extends NestedGroup {
     /**
      * Get the list of all groups in this section, wrapped in a new {@link ArrayList}. This
      * does <strong>not include headers, footers or placeholders</strong>.
+     *
      * @return The list of all groups in this section, wrapped in a new {@link ArrayList}
      */
     public List<Group> getGroups() {
@@ -160,11 +163,11 @@ public class Section extends NestedGroup {
      * <p>
      * If you don't customize getId() or isSameAs() and hasSameContentAs(), the default implementations will return false,
      * meaning your Group will consider every update a complete change of everything.
-     *
+     * <p>
      * This will default detectMoves to true.
      *
-     * @see #update(Collection, boolean)
      * @param newBodyGroups The new content of the section
+     * @see #update(Collection, boolean)
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups) {
         update(newBodyGroups, true);
@@ -182,21 +185,29 @@ public class Section extends NestedGroup {
      * meaning your Group will consider every update a complete change of everything.
      *
      * @param newBodyGroups The new content of the section
-     * @param detectMoves is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to false if you
-     *                    don't want DiffUtil to detect moved items.
+     * @param detectMoves   is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to false if you
+     *                      don't want DiffUtil to detect moved items.
      */
-    public void update(@NonNull final Collection<? extends Group> newBodyGroups, boolean detectMoves) {
+    public void update(
+            @NonNull final Collection<? extends Group> newBodyGroups,
+            boolean detectMoves
+    ) {
         final List<Group> oldBodyGroups = new ArrayList<>(children);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffCallback(oldBodyGroups, newBodyGroups), detectMoves);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new DiffCallback(oldBodyGroups, newBodyGroups), detectMoves
+        );
         this.update(newBodyGroups, diffResult);
     }
 
     /**
      * Overloaded version of update method in which you can pass your own DiffUtil.DiffResult
+     *
      * @param newBodyGroups The new content of the section
-     * @param diffResult
      */
-    public void update(@NonNull final Collection<? extends Group> newBodyGroups, DiffUtil.DiffResult diffResult) {
+    public void update(
+            @NonNull final Collection<? extends Group> newBodyGroups,
+            @NonNull DiffUtil.DiffResult diffResult
+    ) {
         super.removeAll(children);
         children.clear();
         children.addAll(newBodyGroups);
@@ -206,7 +217,7 @@ public class Section extends NestedGroup {
         refreshEmptyState();
     }
 
-    private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
+    private final ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
         @Override
         public void onInserted(int position, int count) {
             notifyItemRangeInserted(getHeaderItemCount() + position, count);
@@ -266,8 +277,6 @@ public class Section extends NestedGroup {
 
     /**
      * Whether a section's contents are visually empty
-     *
-     * @return
      */
     protected boolean isEmpty() {
         return children.isEmpty() || GroupUtils.getItemCount(children) == 0;
@@ -334,12 +343,19 @@ public class Section extends NestedGroup {
     @Override
     @NonNull
     public Group getGroup(int position) {
-        if (isHeaderShown() && position == 0) return header;
+        if (isHeaderShown() && position == 0) {
+            Objects.requireNonNull(header);
+            return header;
+        }
         position -= getHeaderCount();
-        if (isPlaceholderShown() && position == 0) return placeholder;
+        if (isPlaceholderShown() && position == 0) {
+            Objects.requireNonNull(placeholder);
+            return placeholder;
+        }
         position -= getPlaceholderCount();
         if (position == children.size()) {
             if (isFooterShown()) {
+                Objects.requireNonNull(footer);
                 return footer;
             } else {
                 throw new IndexOutOfBoundsException("Wanted group at position " + position +
@@ -393,8 +409,7 @@ public class Section extends NestedGroup {
     }
 
     public void setHeader(@NonNull Group header) {
-        if (header == null)
-            throw new NullPointerException("Header can't be null.  Please use removeHeader() instead!");
+        Objects.requireNonNull(header);
         if (this.header != null) {
             this.header.unregisterGroupDataObserver(this);
         }
@@ -427,8 +442,7 @@ public class Section extends NestedGroup {
 
 
     public void setFooter(@NonNull Group footer) {
-        if (footer == null)
-            throw new NullPointerException("Footer can't be null.  Please use removeFooter() instead!");
+        Objects.requireNonNull(footer);
         if (this.footer != null) {
             this.footer.unregisterGroupDataObserver(this);
         }

@@ -1,15 +1,15 @@
 package com.xwray.groupie;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import androidx.annotation.NonNull;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GroupUtilsTest {
@@ -17,8 +17,10 @@ public class GroupUtilsTest {
     @Test
     public void getItemReturnsCorrectItem() {
         final Group itemContainingGroup = createMockGroup(8);
-        final Item mockItem = mock(Item.class);
-        when(itemContainingGroup.getItem(1)).thenReturn(mockItem);
+        //noinspection unchecked
+        final Item<GroupieViewHolder> mockItem = (Item<GroupieViewHolder>) mock(Item.class);
+        //noinspection unchecked
+        when((Item<GroupieViewHolder>) itemContainingGroup.getItem(1)).thenReturn(mockItem);
 
         final List<Group> groups = new ArrayList<>();
         groups.add(createMockGroup(5));
@@ -47,6 +49,7 @@ public class GroupUtilsTest {
         assertEquals(15, GroupUtils.getItemCount(groups));
     }
 
+    @NonNull
     private Group createMockGroup(int itemCount) {
         final Group mock = mock(Group.class);
 

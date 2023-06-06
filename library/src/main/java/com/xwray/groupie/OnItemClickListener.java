@@ -1,10 +1,8 @@
 package com.xwray.groupie;
 
-import androidx.annotation.NonNull;
 import android.view.View;
+import androidx.annotation.NonNull;
 
 public interface OnItemClickListener {
-
-    void onItemClick(@NonNull Item item, @NonNull View view);
-
+    void onItemClick(@NonNull Item<?> item, @NonNull View view);
 }

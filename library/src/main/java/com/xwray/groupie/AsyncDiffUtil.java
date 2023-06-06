@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
-
 import java.util.Collection;
 
 /**
@@ -49,6 +48,12 @@ class AsyncDiffUtil {
         groups = newGroups;
         // incrementing generation means any currently-running diffs are discarded when they finish
         final int runGeneration = ++maxScheduledGeneration;
-        new DiffTask(this, diffUtilCallback, runGeneration, detectMoves, onAsyncUpdateListener).execute();
+        new DiffTask(
+                this,
+                diffUtilCallback,
+                runGeneration,
+                detectMoves,
+                onAsyncUpdateListener
+        ).execute();
     }
 }

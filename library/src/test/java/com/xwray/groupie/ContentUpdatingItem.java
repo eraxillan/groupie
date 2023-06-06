@@ -3,8 +3,7 @@ package com.xwray.groupie;
 import java.util.Objects;
 
 class ContentUpdatingItem extends DummyItem {
-
-    private String content;
+    private final String content;
 
     ContentUpdatingItem(int id, String content) {
         super(id);

@@ -3,7 +3,6 @@ package com.xwray.groupie;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +17,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
 
     private final GroupDataObservable observable = new GroupDataObservable();
 
+    @Override
     public int getItemCount() {
         int size = 0;
         for (int i = 0; i < getGroupCount(); i++) {
@@ -46,8 +46,9 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
 
     public abstract int getGroupCount();
 
+    @Override
     @NonNull
-    public Item getItem(int position) {
+    public Item<?> getItem(int position) {
         int previousPosition = 0;
 
         for (int i = 0; i < getGroupCount(); i++) {
@@ -63,7 +64,8 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
                 + getItemCount() + " items");
     }
 
-    public final int getPosition(@NonNull Item item) {
+    @Override
+    public final int getPosition(@NonNull Item<?> item) {
         int previousPosition = 0;
 
         for (int i = 0; i < getGroupCount(); i++) {
@@ -134,20 +136,22 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
             getGroup(i).unregisterGroupDataObserver(this);
         }
 
-        for (Group group: groups) {
+        for (Group group : groups) {
             group.registerGroupDataObserver(this);
         }
     }
 
     /**
      * Every item in the group still exists but the data in each has changed (e.g. should rebind).
-     *
-     * @param group
      */
     @CallSuper
     @Override
     public void onChanged(@NonNull Group group) {
-        observable.onItemRangeChanged(this, getItemCountBeforeGroup(group), group.getItemCount());
+        observable.onItemRangeChanged(
+                this,
+                getItemCountBeforeGroup(group),
+                group.getItemCount()
+        );
     }
 
     @CallSuper
@@ -165,7 +169,11 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @CallSuper
     @Override
     public void onItemChanged(@NonNull Group group, int position, Object payload) {
-        observable.onItemChanged(this, getItemCountBeforeGroup(group) + position, payload);
+        observable.onItemChanged(
+                this,
+                getItemCountBeforeGroup(group) + position,
+                payload
+        );
     }
 
     @CallSuper
@@ -177,32 +185,58 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @CallSuper
     @Override
     public void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount) {
-        observable.onItemRangeChanged(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
+        observable.onItemRangeChanged(
+                this,
+                getItemCountBeforeGroup(group) + positionStart,
+                itemCount
+        );
     }
 
     @CallSuper
     @Override
-    public void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount, Object payload) {
-        observable.onItemRangeChanged(this, getItemCountBeforeGroup(group) + positionStart, itemCount, payload);
+    public void onItemRangeChanged(
+            @NonNull Group group,
+            int positionStart,
+            int itemCount,
+            Object payload
+    ) {
+        observable.onItemRangeChanged(
+                this,
+                getItemCountBeforeGroup(group) + positionStart,
+                itemCount,
+                payload
+        );
     }
 
     @CallSuper
     @Override
     public void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount) {
-        observable.onItemRangeInserted(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
+        observable.onItemRangeInserted(
+                this,
+                getItemCountBeforeGroup(group) + positionStart,
+                itemCount
+        );
     }
 
     @CallSuper
     @Override
     public void onItemRangeRemoved(@NonNull Group group, int positionStart, int itemCount) {
-        observable.onItemRangeRemoved(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
+        observable.onItemRangeRemoved(
+                this,
+                getItemCountBeforeGroup(group) + positionStart,
+                itemCount
+        );
     }
 
     @CallSuper
     @Override
     public void onItemMoved(@NonNull Group group, int fromPosition, int toPosition) {
         int groupPosition = getItemCountBeforeGroup(group);
-        observable.onItemMoved(this, groupPosition + fromPosition, groupPosition + toPosition);
+        observable.onItemMoved(
+                this,
+                groupPosition + fromPosition,
+                groupPosition + toPosition
+        );
     }
 
     @CallSuper
@@ -213,9 +247,6 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
 
     /**
      * A group should use this to notify that there is a change in itself.
-     *
-     * @param positionStart
-     * @param itemCount
      */
     @CallSuper
     public void notifyItemRangeInserted(int positionStart, int itemCount) {
@@ -232,26 +263,31 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         observable.onItemMoved(this, fromPosition, toPosition);
     }
 
+    @SuppressWarnings("unused")
     @CallSuper
     public void notifyChanged() {
         observable.onChanged(this);
     }
 
+    @SuppressWarnings("unused")
     @CallSuper
     public void notifyItemInserted(int position) {
         observable.onItemInserted(this, position);
     }
 
+    @SuppressWarnings("unused")
     @CallSuper
     public void notifyItemChanged(int position) {
         observable.onItemChanged(this, position);
     }
 
+    @SuppressWarnings("unused")
     @CallSuper
     public void notifyItemChanged(int position, @Nullable Object payload) {
         observable.onItemChanged(this, position, payload);
     }
 
+    @SuppressWarnings("unused")
     @CallSuper
     public void notifyItemRemoved(int position) {
         observable.onItemRemoved(this, position);
@@ -277,7 +313,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
      * in their callback
      */
     private static class GroupDataObservable {
-        final List<GroupDataObserver> observers = new ArrayList<>();
+        private final List<GroupDataObserver> observers = new ArrayList<>();
 
         void onItemRangeChanged(Group group, int positionStart, int itemCount) {
             for (int i = observers.size() - 1; i >= 0; i--) {
@@ -340,7 +376,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         }
 
         void registerObserver(GroupDataObserver observer) {
-            synchronized(observers) {
+            synchronized (observers) {
                 if (observers.contains(observer)) {
                     throw new IllegalStateException("Observer " + observer + " is already registered.");
                 }
@@ -349,9 +385,8 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         }
 
         void unregisterObserver(GroupDataObserver observer) {
-            synchronized(observers) {
-                int index = observers.indexOf(observer);
-                observers.remove(index);
+            synchronized (observers) {
+                observers.remove(observer);
             }
         }
 

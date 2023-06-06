@@ -1,12 +1,11 @@
 package com.xwray.groupie;
 
 import androidx.annotation.NonNull;
-
 import java.util.Collection;
 
 class GroupUtils {
     @NonNull
-    static Item getItem(Collection<? extends Group> groups, int position) {
+    static Item<?> getItem(@NonNull Collection<? extends Group> groups, int position) {
         int previousPosition = 0;
 
         for (Group group : groups) {

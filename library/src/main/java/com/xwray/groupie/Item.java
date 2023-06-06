@@ -1,12 +1,11 @@
 package com.xwray.groupie;
 
+import android.view.View;
 import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +13,10 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanSizeProvider {
 
-    private static AtomicLong ID_COUNTER = new AtomicLong(0);
+    private static final AtomicLong ID_COUNTER = new AtomicLong(0);
     protected GroupDataObserver parentDataObserver;
     private final long id;
-    private Map<String, Object> extras = new HashMap<>();
+    private final Map<String, Object> extras = new HashMap<>();
 
     public Item() {
         this(ID_COUNTER.decrementAndGet());
@@ -29,16 +28,17 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
 
     @NonNull
     public VH createViewHolder(@NonNull View itemView) {
+        //noinspection unchecked
         return (VH) new GroupieViewHolder(itemView);
     }
 
     /**
      * Perform any actions required to set up the view for display.
      *
-     * @param viewHolder          The viewHolder to bind
-     * @param position            The adapter position
-     * @param payloads            Any payloads (this list may be empty)
-     * @param onItemClickListener An optional adapter-level click listener
+     * @param viewHolder              The viewHolder to bind
+     * @param position                The adapter position
+     * @param payloads                Any payloads (this list may be empty)
+     * @param onItemClickListener     An optional adapter-level click listener
      * @param onItemLongClickListener An optional adapter-level long click listener
      */
     @CallSuper
@@ -56,8 +56,8 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      * the adapter will do a full rebind.
      *
      * @param viewHolder The ViewHolder to bind
-     * @param position The adapter position
-     * @param payloads A list of payloads (may be empty)
+     * @param position   The adapter position
+     * @param payloads   A list of payloads (may be empty)
      */
     public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads) {
         bind(viewHolder, position);
@@ -100,12 +100,17 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
     @LayoutRes
     public abstract int getLayout();
 
-    public void onViewAttachedToWindow(@NonNull VH viewHolder) {}
+    @SuppressWarnings("unused")
+    public void onViewAttachedToWindow(@NonNull VH viewHolder) {
+    }
 
-    public void onViewDetachedFromWindow(@NonNull VH viewHolder) {}
+    @SuppressWarnings("unused")
+    public void onViewDetachedFromWindow(@NonNull VH viewHolder) {
+    }
 
     /**
      * Override this method if the same layout needs to have different viewTypes.
+     *
      * @return the viewType, defaults to the layoutId
      * @see RecyclerView.Adapter#getItemViewType(int)
      */
@@ -120,7 +125,7 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
 
     @Override
     @NonNull
-    public Item getItem(int position) {
+    public Item<?> getItem(int position) {
         if (position == 0) {
             return this;
         } else {
@@ -140,7 +145,7 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
     }
 
     @Override
-    public int getPosition(@NonNull Item item) {
+    public int getPosition(@NonNull Item<?> item) {
         return this == item ? 0 : -1;
     }
 
@@ -195,7 +200,7 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      *
      * @return True if the items are the same, false otherwise.
      */
-    public boolean isSameAs(@NonNull Item other) {
+    public boolean isSameAs(@NonNull Item<?> other) {
         if (getViewType() != other.getViewType()) {
             return false;
         }
@@ -204,20 +209,21 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
 
     /**
      * Whether this item has the same content as another when compared using DiffUtil.
-     *
+     * <p>
      * After two items have been determined to be the same using {@link #isSameAs(Item)} this function
      * should check whether their contents are the same.
-     *
+     * <p>
      * The default implementation does this using {@link #equals(Object)}
      *
      * @return True if both items have the same content, false otherwise
      */
-    public boolean hasSameContentAs(@NonNull Item other) {
+    public boolean hasSameContentAs(@NonNull Item<?> other) {
         return this.equals(other);
     }
 
+    @SuppressWarnings("unused")
     @Nullable
-    public Object getChangePayload(@NonNull Item newItem) {
+    public Object getChangePayload(@NonNull Item<?> newItem) {
         return null;
     }
 }

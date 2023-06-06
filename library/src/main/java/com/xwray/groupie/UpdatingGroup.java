@@ -3,13 +3,12 @@ package com.xwray.groupie;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Deprecated.  Please use #{@link Section#update} instead.
- *
+ * <p>
  * A group which accepts a list of items and diffs them against its previous contents,
  * generating the correct remove, add, move and change notifications to its parent observer,
  * to create an animated item-level update.
@@ -23,7 +22,7 @@ import java.util.List;
 @Deprecated
 public class UpdatingGroup extends NestedGroup {
 
-    private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
+    private final ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
         @Override
         public void onInserted(int position, int count) {
             notifyItemRangeInserted(position, count);
@@ -45,9 +44,9 @@ public class UpdatingGroup extends NestedGroup {
         }
     };
 
-    private List<Item> items = new ArrayList<>();
+    private final List<Item<?>> items = new ArrayList<>();
 
-    public void update(@NonNull List<? extends Item> newItems) {
+    public void update(@NonNull List<? extends Item<?>> newItems) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new UpdatingCallback(newItems));
         super.removeAll(items);
         items.clear();
@@ -78,9 +77,9 @@ public class UpdatingGroup extends NestedGroup {
 
     private class UpdatingCallback extends DiffUtil.Callback {
 
-        private List<? extends Item> newList;
+        private final List<? extends Item<?>> newList;
 
-        UpdatingCallback(List<? extends Item> newList) {
+        UpdatingCallback(List<? extends Item<?>> newList) {
             this.newList = newList;
         }
 
@@ -96,8 +95,8 @@ public class UpdatingGroup extends NestedGroup {
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            Item oldItem = items.get(oldItemPosition);
-            Item newItem = newList.get(newItemPosition);
+            Item<?> oldItem = items.get(oldItemPosition);
+            Item<?> newItem = newList.get(newItemPosition);
             if (oldItem.getViewType() != newItem.getViewType()) {
                 return false;
             }
@@ -106,8 +105,8 @@ public class UpdatingGroup extends NestedGroup {
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            Item oldItem = items.get(oldItemPosition);
-            Item newItem = newList.get(newItemPosition);
+            Item<?> oldItem = items.get(oldItemPosition);
+            Item<?> newItem = newList.get(newItemPosition);
             return oldItem.hasSameContentAs(newItem);
         }
     }

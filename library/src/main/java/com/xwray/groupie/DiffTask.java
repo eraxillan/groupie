@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
-
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 
@@ -16,11 +15,13 @@ import java.util.Collection;
  * <p>This task is executed via {@link AsyncDiffUtil#calculateDiff(Collection, DiffUtil.Callback, OnAsyncUpdateListener, boolean)}.
  */
 class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
-    @NonNull private final DiffUtil.Callback diffCallback;
+    @NonNull
+    private final DiffUtil.Callback diffCallback;
     private final WeakReference<AsyncDiffUtil> asyncListDiffer;
     private final int runGeneration;
     private final boolean detectMoves;
-    @Nullable private WeakReference<OnAsyncUpdateListener> onAsyncUpdateListener;
+    @Nullable
+    private WeakReference<OnAsyncUpdateListener> onAsyncUpdateListener;
     private Exception backgroundException = null;
 
     DiffTask(@NonNull AsyncDiffUtil asyncDiffUtil,
@@ -63,7 +64,12 @@ class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
         }
     }
 
-    private boolean shouldDispatchResult(@Nullable DiffUtil.DiffResult diffResult, AsyncDiffUtil async) {
-        return diffResult != null && async != null && runGeneration == async.getMaxScheduledGeneration();
+    private boolean shouldDispatchResult(
+            @Nullable DiffUtil.DiffResult diffResult,
+            @Nullable AsyncDiffUtil async
+    ) {
+        return diffResult != null &&
+                async != null &&
+                runGeneration == async.getMaxScheduledGeneration();
     }
 }

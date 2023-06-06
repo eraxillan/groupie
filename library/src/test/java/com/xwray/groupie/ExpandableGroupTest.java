@@ -1,38 +1,35 @@
 package com.xwray.groupie;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import androidx.annotation.NonNull;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import androidx.annotation.NonNull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ExpandableGroupTest {
 
     @Mock
-    GroupAdapter groupAdapter;
+    GroupAdapter<GroupieViewHolder> groupAdapter;
 
-    static class DummyExpandableItem extends DummyItem implements ExpandableItem {
+    static class DummyExpandableItemTest extends DummyItem implements ExpandableItem {
 
         @Override
         public void setExpandableGroup(@NonNull ExpandableGroup onToggleListener) {
-
         }
     }
 
-    private DummyExpandableItem parent = new DummyExpandableItem();
+    private final DummyExpandableItemTest parent = new DummyExpandableItemTest();
 
     private final int dummyDataSize = 5;
 
@@ -93,7 +90,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.onToggleExpanded();
 
@@ -122,7 +119,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
 
         assertEquals(1, expandableGroup.getGroupCount());
@@ -133,7 +130,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
 
         assertEquals(2, expandableGroup.getChildCount());
@@ -144,7 +141,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
@@ -158,7 +155,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.onToggleExpanded();
         expandableGroup.registerGroupDataObserver(groupAdapter);
@@ -173,7 +170,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent, true);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.setExpanded(true);
@@ -187,7 +184,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent, false);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.setExpanded(false);
@@ -201,7 +198,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent, false);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.setExpanded(true);
@@ -216,7 +213,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent, true);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.setExpanded(false);
@@ -231,7 +228,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
@@ -355,7 +352,7 @@ public class ExpandableGroupTest {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         Section section = createDummySection();
         expandableGroup.add(section);
-        Item lastItem = new DummyItem();
+        Item<GroupieViewHolder> lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();

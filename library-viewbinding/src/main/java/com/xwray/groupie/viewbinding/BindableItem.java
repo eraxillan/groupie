@@ -1,12 +1,9 @@
 package com.xwray.groupie.viewbinding;
 
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
-
-import android.view.View;
-
 import com.xwray.groupie.Item;
-
 import java.util.List;
 
 /**
@@ -46,7 +43,11 @@ public abstract class BindableItem<T extends ViewBinding> extends Item<GroupieVi
     }
 
     @Override
-    public void bind(@NonNull GroupieViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads) {
+    public void bind(
+            @NonNull GroupieViewHolder<T> viewHolder,
+            int position,
+            @NonNull List<Object> payloads
+    ) {
         bind(viewHolder.binding, position, payloads);
     }
 
@@ -54,19 +55,19 @@ public abstract class BindableItem<T extends ViewBinding> extends Item<GroupieVi
      * Perform any actions required to set up the view for display.
      *
      * @param viewBinding The ViewBinding to bind
-     * @param position The adapter position
+     * @param position    The adapter position
      */
     public abstract void bind(@NonNull T viewBinding, int position);
 
     /**
      * Perform any actions required to set up the view for display.
-     *
+     * <p>
      * If you don't specify how to handle payloads in your implementation, they'll be ignored and
      * the adapter will do a full rebind.
      *
      * @param viewBinding The ViewBinding to bind
-     * @param position The adapter position
-     * @param payloads A list of payloads (may be empty)
+     * @param position    The adapter position
+     * @param payloads    A list of payloads (may be empty)
      */
     public void bind(@NonNull T viewBinding, int position, @NonNull List<Object> payloads) {
         bind(viewBinding, position);

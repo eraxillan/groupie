@@ -2,7 +2,6 @@ package com.xwray.groupie;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
-
 import java.util.Collection;
 
 class DiffCallback extends DiffUtil.Callback {
@@ -30,23 +29,23 @@ class DiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-        Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+        Item<?> oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
+        Item<?> newItem = GroupUtils.getItem(newGroups, newItemPosition);
         return newItem.isSameAs(oldItem);
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-        Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+        Item<?> oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
+        Item<?> newItem = GroupUtils.getItem(newGroups, newItemPosition);
         return newItem.hasSameContentAs(oldItem);
     }
 
     @Nullable
     @Override
     public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-        Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-        Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+        Item<?> oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
+        Item<?> newItem = GroupUtils.getItem(newGroups, newItemPosition);
         return oldItem.getChangePayload(newItem);
     }
 }

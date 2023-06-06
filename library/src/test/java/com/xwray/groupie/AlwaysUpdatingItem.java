@@ -10,5 +10,4 @@ class AlwaysUpdatingItem extends DummyItem {
     public boolean equals(Object obj) {
         return false;
     }
-
 }

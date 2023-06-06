@@ -1,10 +1,10 @@
 package com.xwray.groupie;
 
+import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * An ExpandableGroup is one "base" content item with a list of children (any of which
@@ -17,12 +17,15 @@ public class ExpandableGroup extends NestedGroup {
     private final Group parent;
     private final List<Group> children = new ArrayList<>();
 
-    public <T extends Group & ExpandableItem> ExpandableGroup(T expandableItem) {
+    public <T extends Group & ExpandableItem> ExpandableGroup(@NonNull T expandableItem) {
         this.parent = expandableItem;
         expandableItem.setExpandableGroup(this);
     }
 
-    public <T extends Group & ExpandableItem> ExpandableGroup(T expandableItem, boolean isExpanded) {
+    public <T extends Group & ExpandableItem> ExpandableGroup(
+            @NonNull T expandableItem,
+            boolean isExpanded
+    ) {
         this.parent = expandableItem;
         expandableItem.setExpandableGroup(this);
         this.isExpanded = isExpanded;
@@ -108,7 +111,7 @@ public class ExpandableGroup extends NestedGroup {
 
     @Override
     public void removeAll(@NonNull Collection<? extends Group> groups) {
-        if (groups.isEmpty() || !this.children.containsAll(groups)) return;
+        if (groups.isEmpty() || !new HashSet<>(this.children).containsAll(groups)) return;
         super.removeAll(groups);
         if (isExpanded) {
             this.children.removeAll(groups);
@@ -219,7 +222,12 @@ public class ExpandableGroup extends NestedGroup {
     }
 
     @Override
-    public void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount, Object payload) {
+    public void onItemRangeChanged(
+            @NonNull Group group,
+            int positionStart,
+            int itemCount,
+            Object payload
+    ) {
         if (dispatchChildChanges(group)) {
             super.onItemRangeChanged(group, positionStart, itemCount, payload);
         }

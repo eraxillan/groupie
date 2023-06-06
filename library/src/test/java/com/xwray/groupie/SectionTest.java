@@ -1,19 +1,5 @@
 package com.xwray.groupie;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -25,22 +11,35 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
 @RunWith(MockitoJUnitRunner.class)
 public class SectionTest {
 
     @Mock
-    GroupAdapter groupAdapter;
+    GroupAdapter<GroupieViewHolder> groupAdapter;
 
     private final int footerSize = 5;
-    private Group footer = mock(Group.class);
+    private final Group footer = mock(Group.class);
 
     private final int headerSize = 2;
-    private Group header = mock(Group.class);
+    private final Group header = mock(Group.class);
 
     private final int placeholderSize = 3;
-    private Group placeholder = mock(Group.class);
+    private final Group placeholder = mock(Group.class);
 
-    private Group emptyGroup = mock(Group.class);
+    private final Group emptyGroup = mock(Group.class);
 
     @Before
     public void setUp() {
@@ -169,7 +168,7 @@ public class SectionTest {
     @Test
     public void getGroup() {
         Section section = new Section();
-        Item item = new DummyItem();
+        Item<GroupieViewHolder> item = new DummyItem();
         section.add(item);
         assertEquals(0, section.getPosition(item));
     }
@@ -177,14 +176,15 @@ public class SectionTest {
     @Test
     public void getPositionReturnsNegativeIfItemNotPresent() {
         Section section = new Section();
-        Item item = new DummyItem();
+        Item<GroupieViewHolder> item = new DummyItem();
         assertEquals(-1, section.getPosition(item));
     }
 
     @Test
     public void constructorSetsListenerOnChildrenAndHeader() {
         List<Group> children = new ArrayList<>();
-        Item item = mock(Item.class);
+        //noinspection unchecked
+        Item<GroupieViewHolder> item = mock(Item.class);
         children.add(item);
         Section section = new Section(header, children);
 
@@ -270,7 +270,7 @@ public class SectionTest {
     public void removeAllBodyContentAddsPlaceholder() {
         Section section = new Section();
         section.setPlaceholder(placeholder);
-        Item item = new DummyItem();
+        Item<GroupieViewHolder> item = new DummyItem();
         section.add(item);
         section.registerGroupDataObserver(groupAdapter);
         section.remove(item);
@@ -283,7 +283,7 @@ public class SectionTest {
         Section section = new Section();
         section.setPlaceholder(placeholder);
         Section childGroup = new Section();
-        Item childItem = new DummyItem();
+        Item<GroupieViewHolder> childItem = new DummyItem();
         childGroup.add(childItem);
         section.add(childGroup);
         section.registerGroupDataObserver(groupAdapter);
@@ -536,6 +536,7 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(section, 2, 2);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void addItemToNestedSectionNotifiesAtCorrectIndex() {
         final Section rootSection = new Section();
@@ -554,6 +555,7 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(rootSection, 3, 1);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void addGroupToNestedSectionNotifiesAtCorrectIndex() {
         final Section rootSection = new Section();
@@ -571,6 +573,7 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(rootSection, 3, 2);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void addGroupToNestedSectionWithHeaderNotifiesAtCorrectIndex() {
         final Section rootSection = new Section();
@@ -589,6 +592,7 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(rootSection, 4, 2);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void insertGroupToNestedSectionNotifiesAtCorrectIndex() {
         final Section rootSection = new Section();
@@ -613,7 +617,7 @@ public class SectionTest {
     public void addAllWorksWithSets() {
         final Section testSection = new Section();
 
-        Set<Item> itemSet = new HashSet<>();
+        Set<Item<GroupieViewHolder>> itemSet = new HashSet<>();
         itemSet.add(new DummyItem());
         itemSet.add(new DummyItem());
 
@@ -621,6 +625,7 @@ public class SectionTest {
         assertEquals(2, testSection.getItemCount());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void removeGroupFromNestedSectionNotifiesAtCorrectIndex() {
         final Section rootSection = new Section();
@@ -639,6 +644,7 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 2);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void removeAllGroupFromNestedSectionNotifiesAtCorrectIndex() {
         final Section rootSection = new Section();
@@ -657,6 +663,7 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 2);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void removeAllUnorderedGroupsFromNestedSectionNotifiesAtCorrectIndexes() {
         final Section rootSection = new Section();
@@ -682,6 +689,7 @@ public class SectionTest {
         adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 0, 3);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void clearRemovesAllBodyContents() {
         final Section rootSection = new Section();
@@ -713,7 +721,7 @@ public class SectionTest {
 
     @Test
     public void updateGroupChangesRange() {
-        List<Item> children = new ArrayList<>();
+        List<Item<GroupieViewHolder>> children = new ArrayList<>();
         children.add(new AlwaysUpdatingItem(1));
         children.add(new AlwaysUpdatingItem(2));
 
@@ -732,8 +740,8 @@ public class SectionTest {
 
     @Test
     public void notifyChangeInAnItemCausesParentToNotifyChange() {
-        List<Item> children = new ArrayList<>();
-        Item item = new DummyItem();
+        List<Item<GroupieViewHolder>> children = new ArrayList<>();
+        Item<GroupieViewHolder> item = new DummyItem();
         children.add(item);
 
         Section group = new Section();
@@ -748,8 +756,8 @@ public class SectionTest {
 
     @Test
     public void updateWithTheSameItemAndSameContentsDoesNotNotifyChange() {
-        List<Item> children = new ArrayList<>();
-        Item item = new ContentUpdatingItem(1, "contents");
+        List<Item<GroupieViewHolder>> children = new ArrayList<>();
+        Item<GroupieViewHolder> item = new ContentUpdatingItem(1, "contents");
         children.add(item);
 
         Section group = new Section();
@@ -764,14 +772,14 @@ public class SectionTest {
 
     @Test
     public void updateWithTheSameItemButDifferentContentsNotifiesChange() {
-        Item oldItem = new ContentUpdatingItem(1, "contents");
+        Item<GroupieViewHolder> oldItem = new ContentUpdatingItem(1, "contents");
 
         Section group = new Section();
         group.setHeader(new DummyItem());
         group.update(Collections.singletonList(oldItem));
         group.registerGroupDataObserver(groupAdapter);
 
-        Item newItem = new ContentUpdatingItem(1, "new contents");
+        Item<GroupieViewHolder> newItem = new ContentUpdatingItem(1, "new contents");
         group.update(Collections.singletonList(newItem));
 
         verify(groupAdapter).onItemRangeChanged(group, 1, 1, null);
@@ -779,14 +787,14 @@ public class SectionTest {
 
     @Test
     public void updateWithADifferentItemNotifiesRemoveAndAdd() {
-        Item oldItem = new ContentUpdatingItem(1, "contents");
+        Item<GroupieViewHolder> oldItem = new ContentUpdatingItem(1, "contents");
 
         Section group = new Section();
         group.setHeader(new DummyItem());
         group.update(Collections.singletonList(oldItem));
         group.registerGroupDataObserver(groupAdapter);
 
-        Item newItem = new ContentUpdatingItem(2, "contents");
+        Item<GroupieViewHolder> newItem = new ContentUpdatingItem(2, "contents");
         group.update(Collections.singletonList(newItem));
 
         verify(groupAdapter).onItemRangeRemoved(group, 1, 1);
@@ -795,14 +803,14 @@ public class SectionTest {
 
     @Test
     public void updateWithANestedGroupsNotifiesRemoveAndAdd() {
-        Item oldItem = new ContentUpdatingItem(1, "contents");
+        Item<GroupieViewHolder> oldItem = new ContentUpdatingItem(1, "contents");
 
         Section group = new Section();
         group.setHeader(new DummyItem());
         group.update(Collections.singletonList(oldItem));
         group.registerGroupDataObserver(groupAdapter);
 
-        Item newItem = new ContentUpdatingItem(2, "new contents");
+        Item<GroupieViewHolder> newItem = new ContentUpdatingItem(2, "new contents");
         Section newGroup = new Section();
         newGroup.add(newItem);
         group.update(Collections.singletonList(newGroup));
@@ -813,7 +821,7 @@ public class SectionTest {
 
     @Test
     public void updateGroupWithPlaceholderNotifiesRemovePlaceholderAndInsert() {
-        List<Item> children = new ArrayList<>();
+        List<Item<GroupieViewHolder>> children = new ArrayList<>();
         children.add(new AlwaysUpdatingItem(1));
         children.add(new AlwaysUpdatingItem(2));
 
@@ -830,7 +838,7 @@ public class SectionTest {
 
     @Test
     public void updateGroupToEmptyWithPlaceholderNotifiesRemoveAndInsertPlaceholder() {
-        List<Item> children = new ArrayList<>();
+        List<Item<GroupieViewHolder>> children = new ArrayList<>();
         children.add(new AlwaysUpdatingItem(1));
         children.add(new AlwaysUpdatingItem(2));
 
@@ -840,7 +848,7 @@ public class SectionTest {
         group.update(children);
         group.registerGroupDataObserver(groupAdapter);
 
-        group.update(new ArrayList<Group>());
+        group.update(new ArrayList<>());
 
         verify(groupAdapter).onItemRangeRemoved(group, 1, 2);
         verify(groupAdapter).onItemRangeInserted(group, 1, 1);

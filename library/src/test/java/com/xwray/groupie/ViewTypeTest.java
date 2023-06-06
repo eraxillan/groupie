@@ -1,22 +1,21 @@
 package com.xwray.groupie;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import androidx.annotation.NonNull;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 public class ViewTypeTest {
 
     @Test
     public void noViewTypeOverrideReturnsLayout() {
-        Item item = new ItemWithoutViewTypeOverride(42);
+        Item<GroupieViewHolder> item = new ItemWithoutViewTypeOverride(42);
         assertEquals(item.getViewType(), 42);
     }
 
     @Test
     public void viewTypeOverrideReturnsViewType() {
-        Item item = new ItemWithViewTypeOverride(42, 20);
+        Item<GroupieViewHolder> item = new ItemWithViewTypeOverride(42, 20);
         assertEquals(item.getViewType(), 20);
     }
 

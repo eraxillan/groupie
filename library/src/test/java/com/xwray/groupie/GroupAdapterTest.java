@@ -1,17 +1,15 @@
 package com.xwray.groupie;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GroupAdapterTest {
@@ -45,6 +43,7 @@ public class GroupAdapterTest {
         groupAdapter.add(0, null);
     }
 
+    @Test(expected = RuntimeException.class)
     public void addAllWorksWithSets() {
         Set<Group> groupSet = new HashSet<>();
         groupSet.add(new DummyItem());
@@ -53,5 +52,4 @@ public class GroupAdapterTest {
         groupAdapter.addAll(groupSet);
         assertEquals(2, groupAdapter.getItemCount());
     }
-
 }

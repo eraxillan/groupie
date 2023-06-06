@@ -1,11 +1,9 @@
 package com.xwray.groupie;
 
 import android.view.View;
-
 import androidx.annotation.NonNull;
 
-class DummyItem extends Item {
-
+class DummyItem extends Item<GroupieViewHolder> {
     DummyItem() {
         super();
     }
@@ -14,7 +12,8 @@ class DummyItem extends Item {
         super(id);
     }
 
-    @Override public int getLayout() {
+    @Override
+    public int getLayout() {
         return 0;
     }
 
@@ -26,6 +25,5 @@ class DummyItem extends Item {
 
     @Override
     public void bind(@NonNull GroupieViewHolder viewHolder, int position) {
-
     }
 }
