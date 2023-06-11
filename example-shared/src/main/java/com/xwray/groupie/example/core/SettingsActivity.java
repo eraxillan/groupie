@@ -1,11 +1,10 @@
 package com.xwray.groupie.example.core;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.TextView;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -36,25 +35,16 @@ public class SettingsActivity extends AppCompatActivity {
         showOffsetsText.setText(R.string.show_offsets);
         showOffsetsSwitch.setChecked(prefs.getShowOffsets());
 
-        showBoundsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean showBounds) {
-                prefs.setShowBounds(showBounds);
-            }
-        });
+        showBoundsSwitch.setOnCheckedChangeListener(
+                (compoundButton, showBounds) -> prefs.setShowBounds(showBounds)
+        );
 
-        useAsyncSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean useAsync) {
-                prefs.setUseAsync(useAsync);
-            }
-        });
+        useAsyncSwitch.setOnCheckedChangeListener(
+                (compoundButton, useAsync) -> prefs.setUseAsync(useAsync)
+        );
 
-        showOffsetsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean showOffsets) {
-                prefs.setShowOffsets(showOffsets);
-            }
-        });
+        showOffsetsSwitch.setOnCheckedChangeListener(
+                (compoundButton, showOffsets) -> prefs.setShowOffsets(showOffsets)
+        );
     }
 }

@@ -2,12 +2,11 @@ package com.xwray.groupie.example.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
+import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
 public class Prefs {
 
-    private static final String KEY_COLOR = "KEY_COLOR";
     private static final String KEY_BOUNDS = "KEY_BOUNDS";
     private static final String KEY_ASYNC = "KEY_ASYNC";
     private static final String KEY_OFFSETS = "KEY_OFFSETS";
@@ -15,14 +14,12 @@ public class Prefs {
     private static volatile Prefs singleton;
     private final SharedPreferences prefs;
 
-    private boolean showColor;
     private boolean showBounds;
     private boolean useAsync;
     private boolean showOffsets;
 
-    private Prefs(Context context) {
+    private Prefs(@NonNull Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        showColor = prefs.getBoolean(KEY_COLOR, false);
         showBounds = prefs.getBoolean(KEY_BOUNDS, false);
         useAsync = prefs.getBoolean(KEY_ASYNC, false);
         showOffsets = prefs.getBoolean(KEY_OFFSETS, false);
@@ -55,15 +52,6 @@ public class Prefs {
 
     public boolean getShowOffsets() {
         return showOffsets;
-    }
-
-    public boolean getShowColor() {
-        return showColor;
-    }
-
-    public void setShowColor(boolean showColor) {
-        this.showColor = showColor;
-        prefs.edit().putBoolean(KEY_COLOR, showColor).apply();
     }
 
     void setShowOffsets(boolean showOffsets) {

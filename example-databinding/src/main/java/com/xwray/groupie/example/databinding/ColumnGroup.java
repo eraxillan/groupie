@@ -1,12 +1,10 @@
 package com.xwray.groupie.example.databinding;
 
 import androidx.annotation.NonNull;
-
 import com.xwray.groupie.Group;
 import com.xwray.groupie.GroupDataObserver;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.databinding.BindableItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  */
 public class ColumnGroup implements Group {
 
-    private List<BindableItem<?>> items = new ArrayList<>();
+    private final List<BindableItem<?>> items = new ArrayList<>();
 
     public ColumnGroup(List<? extends BindableItem<?>> items) {
         for (int i = 0; i < items.size(); i++) {
@@ -51,11 +49,12 @@ public class ColumnGroup implements Group {
     }
 
     @Override
-    public int getPosition(@NonNull Item item) {
-        return items.indexOf(item);
+    public int getPosition(@NonNull Item<?> item) {
+        return items.indexOf((BindableItem<?>) item);
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
         return items.size();
     }
 }

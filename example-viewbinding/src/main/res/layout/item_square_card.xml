@@ -14,6 +14,7 @@
         android:layout_gravity="center"
         android:background="@drawable/ripple_circular"
         android:duplicateParentState="true"
+        android:importantForAccessibility="no"
         android:padding="@dimen/padding_small"
         app:srcCompat="@drawable/clear" />
 

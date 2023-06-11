@@ -2,11 +2,9 @@ package com.xwray.groupie.example.databinding;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.xwray.groupie.Group;
 import com.xwray.groupie.GroupDataObserver;
 import com.xwray.groupie.GroupieAdapter;
-import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.example.databinding.item.CarouselItem;
 
@@ -15,36 +13,33 @@ import com.xwray.groupie.example.databinding.item.CarouselItem;
  **/
 public class CarouselGroup implements Group {
 
-    private boolean isEmpty = true;
-    private final RecyclerView.Adapter<GroupieViewHolder> adapter;
+    private boolean isEmpty;
     private GroupDataObserver groupDataObserver;
     private final CarouselItem carouselItem;
 
-    private RecyclerView.AdapterDataObserver adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-            boolean empty = adapter.getItemCount() == 0;
-            if (empty && !isEmpty) {
-                isEmpty = empty;
-                groupDataObserver.onItemRemoved(carouselItem, 0);
-            }
-        }
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-            boolean empty = adapter.getItemCount() == 0;
-            if (isEmpty && !empty) {
-                isEmpty = empty;
-                groupDataObserver.onItemInserted(carouselItem, 0);
-            }
-        }
-    };
-
     public CarouselGroup(RecyclerView.ItemDecoration itemDecoration, GroupieAdapter adapter) {
-        this.adapter = adapter;
         carouselItem = new CarouselItem(itemDecoration, adapter);
         isEmpty = adapter.getItemCount() == 0;
+        RecyclerView.AdapterDataObserver adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                boolean empty = adapter.getItemCount() == 0;
+                if (empty && !isEmpty) {
+                    isEmpty = true;
+                    groupDataObserver.onItemRemoved(carouselItem, 0);
+                }
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                boolean empty = adapter.getItemCount() == 0;
+                if (isEmpty && !empty) {
+                    isEmpty = false;
+                    groupDataObserver.onItemInserted(carouselItem, 0);
+                }
+            }
+        };
         adapter.registerAdapterDataObserver(adapterDataObserver);
     }
 
@@ -55,13 +50,13 @@ public class CarouselGroup implements Group {
 
     @NonNull
     @Override
-    public Item getItem(int position) {
+    public Item<?> getItem(int position) {
         if (position == 0 && !isEmpty) return carouselItem;
         else throw new IndexOutOfBoundsException();
     }
 
     @Override
-    public int getPosition(@NonNull Item item) {
+    public int getPosition(@NonNull Item<?> item) {
         return item == carouselItem && !isEmpty ? 0 : -1;
     }
 

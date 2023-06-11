@@ -10,7 +10,8 @@ public class SmallCardItem extends CardItem {
         super(text);
     }
 
-    @Override public int getSpanSize(int spanCount, int position) {
+    @Override
+    public int getSpanSize(int spanCount, int position) {
         return spanCount / 3;
     }
 }

@@ -4,8 +4,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.xwray.groupie.Group
-import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.GroupDataObserver
+import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.example.viewbinding.item.CarouselItem
 
@@ -30,7 +30,7 @@ class CarouselGroup(
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 val empty = adapter.itemCount == 0
                 if (empty && !isEmpty) {
-                    isEmpty = empty
+                    isEmpty = true
                     groupDataObserver?.onItemRemoved(carouselItem, 0)
                 }
             }
@@ -38,7 +38,7 @@ class CarouselGroup(
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 val empty = adapter.itemCount == 0
                 if (isEmpty && !empty) {
-                    isEmpty = empty
+                    isEmpty = false
                     groupDataObserver?.onItemInserted(carouselItem, 0)
                 }
             }

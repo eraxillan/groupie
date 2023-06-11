@@ -243,8 +243,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final OnItemClickListener onItemClickListener = (item, view) -> {
-        if (item instanceof CardItem) {
-            CardItem cardItem = (CardItem) item;
+        if (item instanceof CardItem cardItem) {
             if (!TextUtils.isEmpty(cardItem.getText())) {
                 Toast.makeText(
                         MainActivity.this,
@@ -256,8 +255,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private final OnItemLongClickListener onItemLongClickListener = (item, view) -> {
-        if (item instanceof CardItem) {
-            CardItem cardItem = (CardItem) item;
+        if (item instanceof CardItem cardItem) {
             if (!TextUtils.isEmpty(cardItem.getText())) {
                 Toast.makeText(
                         MainActivity.this,

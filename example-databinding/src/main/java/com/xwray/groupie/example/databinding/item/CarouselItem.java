@@ -1,10 +1,9 @@
 package com.xwray.groupie.example.databinding.item;
 
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-
 import com.xwray.groupie.GroupieAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
@@ -33,20 +32,25 @@ public class CarouselItem extends BindableItem<ItemCarouselBinding> implements O
         GroupieViewHolder<ItemCarouselBinding> viewHolder = super.createViewHolder(itemView);
         RecyclerView recyclerView = viewHolder.binding.recyclerView;
         recyclerView.addItemDecoration(carouselDecoration);
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(recyclerView.getContext(),
+                        LinearLayoutManager.HORIZONTAL, false)
+        );
         return viewHolder;
     }
 
-    @Override public void bind(@NonNull ItemCarouselBinding viewBinding, int position) {
+    @Override
+    public void bind(@NonNull ItemCarouselBinding viewBinding, int position) {
         viewBinding.recyclerView.setAdapter(adapter);
     }
 
-    @Override public int getLayout() {
+    @Override
+    public int getLayout() {
         return R.layout.item_carousel;
     }
 
     @Override
-    public void onItemClick(@NonNull Item item, @NonNull View view) {
+    public void onItemClick(@NonNull Item<?> item, @NonNull View view) {
         adapter.remove(item);
     }
 }

@@ -10,8 +10,7 @@
         <activity
             android:name="com.xwray.groupie.example.core.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/SettingsTheme">
-        </activity>
+            android:theme="@style/SettingsTheme" />
     </application>
 
 </manifest>

@@ -32,7 +32,7 @@ public class ExpandableHeaderItem extends HeaderItem implements ExpandableItem {
         });
     }
 
-    private void bindIcon(ItemHeaderBinding viewBinding) {
+    private void bindIcon(@NonNull ItemHeaderBinding viewBinding) {
         viewBinding.icon.setVisibility(View.VISIBLE);
         viewBinding.icon.setImageResource(expandableGroup.isExpanded() ?
                 R.drawable.collapse_animated : R.drawable.expand_animated);

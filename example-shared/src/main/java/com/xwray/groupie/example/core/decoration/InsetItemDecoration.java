@@ -3,19 +3,20 @@ package com.xwray.groupie.example.core.decoration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-
 import com.xwray.groupie.GroupieViewHolder;
+import java.util.Objects;
 
 /**
  * An ItemDecoration which applies an even visual padding on the left and right edges of a grid and
  * between each item, while also applying an even amount of inset to each item.  This ensures that
  * all items remain the same size.
- *
+ * <p>
  * It assumes all items in a row have the same span size, and it assumes it's the only item
  * decorator.
  */
@@ -26,7 +27,12 @@ public class InsetItemDecoration extends RecyclerView.ItemDecoration {
     private final String key;
     private final String value;
 
-    public InsetItemDecoration(@ColorInt int backgroundColor, @Dimension int padding, String key, String value) {
+    public InsetItemDecoration(
+            @ColorInt int backgroundColor,
+            @Dimension int padding,
+            String key,
+            String value
+    ) {
         this.key = key;
         this.value = value;
         paint = new Paint();
@@ -34,20 +40,29 @@ public class InsetItemDecoration extends RecyclerView.ItemDecoration {
         this.padding = padding;
     }
 
-    private boolean isInset(View view, RecyclerView parent) {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    private boolean isInset(View view, @NonNull RecyclerView parent) {
         GroupieViewHolder viewHolder = (GroupieViewHolder) parent.getChildViewHolder(view);
         if (viewHolder.getExtras().containsKey(key)) {
-            return viewHolder.getExtras().get(key).equals(value);
+            return Objects.equals(viewHolder.getExtras().get(key), value);
         } else {
             return false;
         }
     }
 
-    @Override public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    @Override
+    public void getItemOffsets(
+            @NonNull Rect outRect,
+            @NonNull View view,
+            @NonNull RecyclerView parent,
+            @NonNull RecyclerView.State state
+    ) {
         if (!isInset(view, parent)) return;
 
-        GridLayoutManager.LayoutParams layoutParams = (GridLayoutManager.LayoutParams) view.getLayoutParams();
+        GridLayoutManager.LayoutParams layoutParams =
+                (GridLayoutManager.LayoutParams) view.getLayoutParams();
         GridLayoutManager gridLayoutManager = (GridLayoutManager) parent.getLayoutManager();
+        Objects.requireNonNull(gridLayoutManager);
         float spanSize = layoutParams.getSpanSize();
         float totalSpanSize = gridLayoutManager.getSpanCount();
 
@@ -62,15 +77,19 @@ public class InsetItemDecoration extends RecyclerView.ItemDecoration {
         outRect.bottom = padding;
     }
 
-    @Override public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    @Override
+    public void onDraw(
+            @NonNull Canvas c,
+            @NonNull RecyclerView parent,
+            @NonNull RecyclerView.State state
+    ) {
         RecyclerView.LayoutManager lm = parent.getLayoutManager();
+        Objects.requireNonNull(lm);
 
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
             if (!isInset(child, parent)) continue;
-
-            //
             if (child.getTranslationX() != 0 || child.getTranslationY() != 0) {
                 c.drawRect(
                         lm.getDecoratedLeft(child),
@@ -92,7 +111,8 @@ public class InsetItemDecoration extends RecyclerView.ItemDecoration {
                     top,
                     child.getLeft() + child.getTranslationX(),
                     bottom,
-                    paint);
+                    paint
+            );
 
             float right = lm.getDecoratedRight(child) + child.getTranslationX();
             if (isLast) {
@@ -105,7 +125,8 @@ public class InsetItemDecoration extends RecyclerView.ItemDecoration {
                     top,
                     right,
                     bottom,
-                    paint);
+                    paint
+            );
 
             // Bottom border
             c.drawRect(
@@ -113,7 +134,8 @@ public class InsetItemDecoration extends RecyclerView.ItemDecoration {
                     bottom,
                     right,
                     lm.getDecoratedBottom(child) + child.getTranslationY(),
-                    paint);
+                    paint
+            );
         }
     }
 }

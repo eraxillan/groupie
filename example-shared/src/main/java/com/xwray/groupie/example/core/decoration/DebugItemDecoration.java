@@ -4,22 +4,22 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-
 import com.xwray.groupie.example.core.Prefs;
 import com.xwray.groupie.example.core.R;
+import java.util.Objects;
 
 public class DebugItemDecoration extends RecyclerView.ItemDecoration {
 
-    private int decoratedLeft, decoratedTop, decoratedRight, decoratedBottom;
-    private int left, top, right, bottom;
-    private Paint paint = new Paint();
-    private Prefs prefs;
-    private int leftColor, topColor, rightColor, bottomColor;
+    private final Paint paint = new Paint();
+    private final Prefs prefs;
+    private final int leftColor;
+    private final int topColor;
+    private final int rightColor;
+    private final int bottomColor;
 
     public DebugItemDecoration(Context context) {
         prefs = Prefs.get(context);
@@ -29,7 +29,12 @@ public class DebugItemDecoration extends RecyclerView.ItemDecoration {
         bottomColor = ContextCompat.getColor(context, R.color.indigo_200);
     }
 
-    @Override public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+    @Override
+    public void onDrawOver(
+            @NonNull Canvas c,
+            @NonNull RecyclerView parent,
+            @NonNull RecyclerView.State state
+    ) {
         if (!(prefs.getShowBounds() || prefs.getShowOffsets())) return;
 
         int childCount = parent.getChildCount();
@@ -37,15 +42,16 @@ public class DebugItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
 
             RecyclerView.LayoutManager lm = parent.getLayoutManager();
-            decoratedLeft = lm.getDecoratedLeft(child) + (int) child.getTranslationX();
-            decoratedTop = lm.getDecoratedTop(child) + (int) child.getTranslationY();
-            decoratedRight = lm.getDecoratedRight(child) + (int) child.getTranslationX();
-            decoratedBottom = lm.getDecoratedBottom(child) + (int) child.getTranslationY();
+            Objects.requireNonNull(lm);
+            int decoratedLeft = lm.getDecoratedLeft(child) + (int) child.getTranslationX();
+            int decoratedTop = lm.getDecoratedTop(child) + (int) child.getTranslationY();
+            int decoratedRight = lm.getDecoratedRight(child) + (int) child.getTranslationX();
+            int decoratedBottom = lm.getDecoratedBottom(child) + (int) child.getTranslationY();
 
-            left = child.getLeft() + (int) child.getTranslationX();
-            top = child.getTop() + (int) child.getTranslationY();
-            right = child.getRight() + (int) child.getTranslationX();
-            bottom = child.getBottom() + (int) child.getTranslationY();
+            int left = child.getLeft() + (int) child.getTranslationX();
+            int top = child.getTop() + (int) child.getTranslationY();
+            int right = child.getRight() + (int) child.getTranslationX();
+            int bottom = child.getBottom() + (int) child.getTranslationY();
 
             if (prefs.getShowBounds()) {
                 paint.setColor(Color.RED);

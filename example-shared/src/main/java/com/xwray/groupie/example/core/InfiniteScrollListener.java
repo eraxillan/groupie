@@ -1,5 +1,6 @@
 package com.xwray.groupie.example.core;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -7,31 +8,20 @@ public abstract class InfiniteScrollListener extends RecyclerView.OnScrollListen
 
     private int previousTotal = 0; // The total number of items in the dataset after the last load
     private boolean loading = true; // True if we are still waiting for the last set of data to load.
-    private final int visibleThreshold = 5; // The minimum amount of items to have below your current scroll position before loading more.
-    private int firstVisibleItem, visibleItemCount, totalItemCount;
     private int currentPage = 0;
-    private LinearLayoutManager linearLayoutManager;
-    private Runnable loadMore = new Runnable() {
-        @Override
-        public void run() {
-            onLoadMore(currentPage);
-        }
-    };
+    private final LinearLayoutManager linearLayoutManager;
+    private final Runnable loadMore = () -> onLoadMore(currentPage);
 
     public InfiniteScrollListener(LinearLayoutManager linearLayoutManager) {
         this.linearLayoutManager = linearLayoutManager;
     }
 
-    public void setLinearLayoutManager(LinearLayoutManager linearLayoutManager) {
-        this.linearLayoutManager = linearLayoutManager;
-    }
-
     @Override
-    public void onScrolled(final RecyclerView recyclerView, int dx, int dy) {
+    public void onScrolled(@NonNull final RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-        visibleItemCount = recyclerView.getChildCount();
-        totalItemCount = linearLayoutManager.getItemCount();
-        firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+        int visibleItemCount = recyclerView.getChildCount();
+        int totalItemCount = linearLayoutManager.getItemCount();
+        int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
 
         if (loading) {
             if (totalItemCount > previousTotal || totalItemCount == 0) {
@@ -41,6 +31,8 @@ public abstract class InfiniteScrollListener extends RecyclerView.OnScrollListen
         }
 
         // End has been reached
+        // The minimum amount of items to have below your current scroll position before loading more.
+        int visibleThreshold = 5;
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
             currentPage++;
             recyclerView.post(loadMore);

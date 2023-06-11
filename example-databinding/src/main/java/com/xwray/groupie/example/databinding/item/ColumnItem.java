@@ -9,7 +9,8 @@ public class ColumnItem extends CardItem {
         getExtras().put(MainActivity.INSET_TYPE_KEY, MainActivity.INSET);
     }
 
-    @Override public int getSpanSize(int spanCount, int position) {
+    @Override
+    public int getSpanSize(int spanCount, int position) {
         return spanCount / 2;
     }
 }

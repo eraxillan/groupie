@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="?android:attr/listPreferredItemHeightLarge"
@@ -11,13 +11,14 @@
         android:orientation="vertical">
 
         <ImageView
-            app:srcCompat="@drawable/clear"
-            android:background="@drawable/ripple_circular"
-            android:padding="@dimen/padding_small"
-            android:duplicateParentState="true"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ripple_circular"
+            android:duplicateParentState="true"
+            android:padding="@dimen/padding_small"
+            app:srcCompat="@drawable/clear"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 </layout>

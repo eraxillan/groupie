@@ -2,6 +2,6 @@
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@drawable/favorite_pressed">
     <target
-        android:animation="@animator/opacity_pulse"
-        android:name="fillGroup"/>
+        android:name="fillGroup"
+        android:animation="@animator/opacity_pulse" />
 </animated-vector>

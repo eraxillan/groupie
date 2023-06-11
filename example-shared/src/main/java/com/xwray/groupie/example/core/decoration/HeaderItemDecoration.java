@@ -3,11 +3,12 @@ package com.xwray.groupie.example.core.decoration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
+import java.util.Objects;
 
 public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -15,7 +16,11 @@ public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
     private final int sidePaddingPixels;
     private final int headerViewType;
 
-    public HeaderItemDecoration(@ColorInt int background, int sidePaddingPixels, @LayoutRes int headerViewType) {
+    public HeaderItemDecoration(
+            @ColorInt int background,
+            int sidePaddingPixels,
+            @LayoutRes int headerViewType
+    ) {
         this.sidePaddingPixels = sidePaddingPixels;
         this.headerViewType = headerViewType;
         paint = new Paint();
@@ -23,24 +28,38 @@ public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean isHeader(View child, RecyclerView parent) {
-        int viewType = parent.getLayoutManager().getItemViewType(child);
+    public boolean isHeader(View child, @NonNull RecyclerView parent) {
+        var lm = parent.getLayoutManager();
+        Objects.requireNonNull(lm);
+        int viewType = lm.getItemViewType(child);
         return viewType == headerViewType;
     }
 
-    @Override public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    @Override
+    public void getItemOffsets(
+            @NonNull Rect outRect,
+            @NonNull View view,
+            @NonNull RecyclerView parent,
+            @NonNull RecyclerView.State state
+    ) {
         if (!isHeader(view, parent)) return;
 
         outRect.left = sidePaddingPixels;
         outRect.right = sidePaddingPixels;
     }
 
-    @Override public void onDraw(@NonNull Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
+    @Override
+    public void onDraw(
+            @NonNull Canvas c,
+            @NonNull RecyclerView parent,
+            @NonNull RecyclerView.State state
+    ) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (!isHeader(child, parent)) continue;
 
             RecyclerView.LayoutManager lm = parent.getLayoutManager();
+            Objects.requireNonNull(lm);
 
             float top = lm.getDecoratedTop(child) + child.getTranslationY();
             float bottom = lm.getDecoratedBottom(child) + child.getTranslationY();

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="80dp"
@@ -16,7 +17,8 @@
         android:src="@drawable/one"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -38,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
             android:maxLines="3"
-            android:text="Best article ever"
+            android:text="@string/best_article_ever"
             android:textColor="#000000"
             android:textSize="18sp" />
 
@@ -46,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="Don't pay attention here."
+            android:text="@string/don_t_pay_attention_here"
             android:textSize="13sp" />
     </LinearLayout>
 

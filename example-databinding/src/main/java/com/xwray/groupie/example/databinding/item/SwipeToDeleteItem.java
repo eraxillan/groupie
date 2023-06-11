@@ -8,7 +8,8 @@ public class SwipeToDeleteItem extends CardItem {
         super();
     }
 
-    @Override public int getSwipeDirs() {
+    @Override
+    public int getSwipeDirs() {
         return ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
     }
 }
